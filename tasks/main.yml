@@ -11,6 +11,12 @@
     __docker_pihole_random_password: "{{ lookup('password', '/dev/null chars=ascii_letters,digits') }}"
     __docker_pihole_admin_password: "{{ docker_pihole_admin_password | default(__docker_pihole_random_password) }}"
 
+- name: Pull pihole image
+  community.docker.docker_image:
+    name: "{{ docker_pihole_image_name }}"
+    source: pull
+    force_source: true
+
 - name: "[docker] Setup the pi-hole docker container"
   docker_container:
     name: "{{ docker_pihole_container_name }}"
