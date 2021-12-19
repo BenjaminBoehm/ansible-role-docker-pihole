@@ -1,5 +1,11 @@
 ---
 
+- name: disable systemd-resolved service
+  service:
+    name: systemd-resolved.service
+    state: stopped
+    enabled: no
+
 - name: "Set the __docker_pihole_admin_password fact"
   set_fact:
     __docker_pihole_random_password: "{{ lookup('password', '/dev/null chars=ascii_letters,digits') }}"
@@ -10,12 +16,17 @@
     name: "{{ docker_pihole_container_name }}"
     image: "{{ docker_pihole_image_name }}"
     state: started
+    hostname: "{{ docker_pihole_hostname }}"
     restart: yes
     restart_policy: unless-stopped
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "8080:80/tcp"
     networks_cli_compatible: yes
     networks:
       - name: "{{ docker_pihole_network | default('bridge') }}"
-        ipv4_address: "{{ docker_pihole_ipv4_address }}"
     purge_networks: "{{ docker_pihole_purge_networks }}"
     volumes: "{{ docker_pihole_volumes }}"
     env:

@@ -1,6 +1,7 @@
 ---
 
 docker_pihole_container_name: pihole
+docker_pihole_hostname: pihole
 docker_pihole_image_name: pihole/pihole:latest
 
 docker_pihole_network: bridge
@@ -16,7 +17,7 @@ docker_pihole_volumes:
   - "{{ docker_pihole_host_dir_pihole }}:/etc/pihole/"
   - "{{ docker_pihole_host_dir_dnsmasqd }}:/etc/dnsmasq.d/"
 
-docker_pihole_timezone: "Europe/Amsterdam"
+docker_pihole_timezone: "Europe/Berlin"
 
 docker_pihole_dns_custom_hosts: []
 #  - name: somehost
